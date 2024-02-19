@@ -10,10 +10,8 @@ const initialState = [
     date: sub(new Date(), { minutes: 10 }).toISOString(),
     reactions: {
       thumbsUp: 0,
-      wow: 0,
+      thumbsDown: 0,
       heart: 0,
-      rocket: 0,
-      coffee: 0,
     },
   },
   {
@@ -24,10 +22,8 @@ const initialState = [
     date: sub(new Date(), { minutes: 5 }).toISOString(),
     reactions: {
       thumbsUp: 0,
-      wow: 0,
+      thumbsDown: 0,
       heart: 0,
-      rocket: 0,
-      coffee: 0,
     },
   },
   {
@@ -38,10 +34,8 @@ const initialState = [
     date: sub(new Date(), { minutes: 5 }).toISOString(),
     reactions: {
       thumbsUp: 0,
-      wow: 0,
+      thumbsDown: 0,
       heart: 0,
-      rocket: 0,
-      coffee: 0,
     },
   },
   {
@@ -52,10 +46,8 @@ const initialState = [
     date: sub(new Date(), { minutes: 5 }).toISOString(),
     reactions: {
       thumbsUp: 0,
-      wow: 0,
+      thumbsDown: 0,
       heart: 0,
-      rocket: 0,
-      coffee: 0,
     },
   },
   {
@@ -63,14 +55,11 @@ const initialState = [
     title: "Axios",
     content:
       "A promise-based HTTP client for making AJAX requests in React applications, offering features like request and response interceptors, automatic transformation of JSON data, and cancellation of requests.",
-
     date: sub(new Date(), { minutes: 5 }).toISOString(),
     reactions: {
       thumbsUp: 0,
-      wow: 0,
+      thumbsDown: 0,
       heart: 0,
-      rocket: 0,
-      coffee: 0,
     },
   },
 ];
@@ -78,11 +67,40 @@ const initialState = [
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    postAdded: {
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare(title, content, userId) {
+        return {
+          payload: {
+            id: nanoid(),
+            title,
+            content,
+            date: new Date().toISOString(),
+            userId,
+            reactions: {
+              thumbsUp: 0,
+              thumbsDown: 0,
+              heart: 0,
+            },
+          },
+        };
+      },
+    },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
+    },
+  },
 });
 
 export const selectAllPosts = (state) => state.posts;
 
-export const {} = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;

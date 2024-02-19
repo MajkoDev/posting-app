@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Header />
-      <section className="m-1 rounded-md py-3 bg-slate-100">
+      <section className="m-1 rounded-md py-3 bg-slate-50">
         <h2 className="text-lg pb-2 text-center font-semibold">Form</h2>
         <PostForm />
       </section>

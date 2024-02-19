@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllUsers } from "../redux/usersSlice";
+import { postAdded } from "../redux/postsSlice";
 
 export default function PostForm() {
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ export default function PostForm() {
 
   const onSavePostClick = () => {
     if (title && content) {
-      console.log(title, content, userId);
+      dispatch(postAdded(title, content, userId))
       setTitle("");
       setContent("");
     }
